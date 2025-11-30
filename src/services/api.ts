@@ -12,6 +12,7 @@ export interface User {
     fullName: string;
     email: string;
     roles: string;
+    isApproved: boolean;
 }
 
 export interface Enrollment {
@@ -20,6 +21,7 @@ export interface Enrollment {
     fullName: string;
     courseId: number;
     title: string;
+    description: string;
     progress: number;
     createdAt: string;
     instructorName?: string;
@@ -48,7 +50,7 @@ export async function getUsers(): Promise<User[]> {
 // Fetch current student's enrollments
 export async function getMyEnrollments(): Promise<Enrollment[]> {
     const token = localStorage.getItem("token");
-    const response = await fetch(`${BASE_URL}/enrollment/myenrollments`, {
+    const response = await fetch(`${BASE_URL}/enrollments/myenrollments`, {
         headers: { "Authorization": `Bearer ${token}` }
     });
     if (!response.ok) throw new Error("Failed to fetch enrollments");
@@ -58,7 +60,7 @@ export async function getMyEnrollments(): Promise<Enrollment[]> {
 // Enroll in a course
 export async function enroll(courseId: number): Promise<Enrollment> {
     const token = localStorage.getItem("token");
-    const response = await fetch(`${BASE_URL}/enrollment/enroll/${courseId}/`, {
+    const response = await fetch(`${BASE_URL}/enrollments/enroll/${courseId}/`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",

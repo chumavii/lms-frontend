@@ -25,7 +25,7 @@ function LoginForm({ onLoginSuccess }: LoginFormProps) {
       });
 
       if (!response.ok) throw new Error('Invalid credentials');
-
+      if (localStorage.getItem('token') != null) localStorage.removeItem("token");
       const data = await response.json();
       localStorage.setItem('token', data.token);
       onLoginSuccess(data.token);

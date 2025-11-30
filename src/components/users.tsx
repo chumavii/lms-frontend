@@ -37,13 +37,12 @@ function Users() {
     );
   };
 
-  // Click outside to close filter dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
         setShowFilters(false);
       }
-      setShowActions(false); // close actions when clicking outside
+      setShowActions(false);
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -52,7 +51,11 @@ function Users() {
   const handleAction = (action: string) => {
     console.log("Action:", action, "on", selectedUsers);
     setShowActions(false);
-    setSelectedUsers([]); // optionally reset selection
+    setSelectedUsers([]);
+  };
+
+  const renderStatus = (isApproved: boolean) => {
+    return isApproved ? "Active" : "Inactive";
   };
 
   return (
@@ -61,7 +64,6 @@ function Users() {
 
       {/* Top Actions */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 w-full">
-        {/* Actions Dropdown */}
         <div className="relative w-full sm:w-auto">
           <button
             disabled={selectedUsers.length === 0}
@@ -88,7 +90,6 @@ function Users() {
           )}
         </div>
 
-        {/* Search + Filter */}
         <div className="flex w-full sm:w-auto gap-2 items-center relative" ref={filterRef}>
           <input
             type="text"
@@ -144,7 +145,7 @@ function Users() {
         </div>
       )}
 
-      {/* Users Table for Desktop */}
+      {/* Desktop Table */}
       {!loading && !error && (
         <div className="overflow-x-auto rounded-lg border border-gray-200 hidden sm:block">
           <table className="min-w-full divide-y divide-gray-200">
@@ -169,6 +170,7 @@ function Users() {
                 <th className="px-4 py-3 text-left">Name</th>
                 <th className="px-4 py-3 text-left">Email</th>
                 <th className="px-4 py-3 text-left">Roles</th>
+                <th className="px-4 py-3 text-left">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 text-sm">
@@ -184,10 +186,9 @@ function Users() {
                   <td className="px-4 py-3 font-medium">{user.fullName}</td>
                   <td className="px-4 py-3">{user.email}</td>
                   <td className="px-4 py-3">
-                    {Array.isArray(user.roles)
-                      ? user.roles.join(", ")
-                      : user.roles}
+                    {Array.isArray(user.roles) ? user.roles.join(", ") : user.roles}
                   </td>
+                  <td className="px-4 py-3">{renderStatus(user.isApproved)}</td>
                 </tr>
               ))}
             </tbody>
@@ -195,7 +196,7 @@ function Users() {
         </div>
       )}
 
-      {/* Card layout for Mobile */}
+      {/* Mobile Cards */}
       {!loading && !error && (
         <div className="sm:hidden flex flex-col gap-2">
           {filteredUsers.map((user) => (
@@ -212,6 +213,7 @@ function Users() {
               <p className="text-sm text-gray-500">
                 {Array.isArray(user.roles) ? user.roles.join(", ") : user.roles}
               </p>
+              <p className="text-sm text-gray-500">Status: {renderStatus(user.isApproved)}</p>
             </div>
           ))}
         </div>
