@@ -1,54 +1,51 @@
-# React + TypeScript + Vite
+# 🎓 Upskeel LMS Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the **Upskeel LMS Frontend**, built using **React + TypeScript + Vite** and styled with **TailwindCSS**.
 
-Currently, two official plugins are available:
+It communicates with the Upskeel .NET backend and provides role-based UI for Students, Instructors, and Admins.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌐 Live App
+👉 https://upskeel.vercel.app/login
 
-## Expanding the ESLint configuration
+## 🚀 Features
+- Authentication + JWT handling
+- Student course browsing & enrollment
+- Instructor request workflow
+- Admin dashboards
+- Instructor approvals & user management
+- Custom LMS dashboard UI with cards and role‑based menus
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Tech Stack
+- React 18
+- TypeScript
+- Vite
+- TailwindCSS
+- React Router v6
+- Lucide Icons
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## ⚙️ Setup
+Create `.env`:
+```
+VITE_API_BASE_URL=https://upskeel.up.railway.app/api
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+Install:
 ```
+npm install
+```
+
+Run:
+```
+npm run dev
+```
+
+## 🔐 Auth
+Frontend decodes JWT roles:
+- **Student**
+- **Instructor**
+- **Admin**
+
+Used for conditional routing & UI display.
+
+## 👨‍💻 Author
+**Chuma**

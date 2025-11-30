@@ -14,6 +14,7 @@ import MyCourses from "./components/my-courses.tsx";
 import AddCourse from "./components/add-course.tsx";
 import ForgotPasswordForm from "./components/forgot-password.tsx";
 import ResetPasswordForm from "./components/reset-password.tsx";
+import InstructorRequests from "./components/instructor-requests.tsx";
 
 function App() {
   const { login } = useAuth(); // This is from your AuthContext
@@ -40,6 +41,7 @@ function App() {
             <Route path="/add-course" element={<PrivateRoute allowedRoles={instructorRole}><AddCourse /></PrivateRoute>} />
             <Route path="/my-courses" element={<PrivateRoute allowedRoles={studentRole}><MyCourses /></PrivateRoute>} />
             <Route path="/users" element={<PrivateRoute allowedRoles={adminRole}><Users /></PrivateRoute>} />
+            <Route path="/instructor-requests" element={<PrivateRoute allowedRoles={adminRole}><InstructorRequests /></PrivateRoute>} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
           </Route>
