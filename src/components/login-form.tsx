@@ -79,7 +79,7 @@ function LoginForm({ onLoginSuccess }: LoginFormProps) {
           <div className='text-xs p-6 text-center'>
             <p>Don't have an account? <Link to="/signup" className='underline text-blue-400'>Sign up</Link></p>
             <p>Or</p>
-            <p onClick={loginAsGuest} className='underline text-blue-400 cursor-pointer'> Login as a guest </p>
+            <p onClick={loginAsGuest} className='underline text-blue-400 cursor-pointer'> Continue as guest </p>
           </div>
         </form>
       </div>
