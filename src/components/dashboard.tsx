@@ -26,7 +26,7 @@ function Dashboard() {
                                     <Users className="w-5 h-5 text-blue-600" />
                                 </div>
                             </div>
-                            <div className="analytics-card-value">2,847</div>
+                            <div className="analytics-card-value">27</div>
                             <div className="analytics-card-change positive">
                                 <span>↑ 12% from last month</span>
                             </div>
@@ -39,7 +39,7 @@ function Dashboard() {
                                     <BookMarked className="w-5 h-5 text-orange-600" />
                                 </div>
                             </div>
-                            <div className="analytics-card-value">156</div>
+                            <div className="analytics-card-value">12</div>
                             <div className="analytics-card-change positive">
                                 <span>↑ 8% from last month</span>
                             </div>
@@ -52,7 +52,7 @@ function Dashboard() {
                                     <TrendingUp className="w-5 h-5 text-green-600" />
                                 </div>
                             </div>
-                            <div className="analytics-card-value">5,230</div>
+                            <div className="analytics-card-value">41</div>
                             <div className="analytics-card-change positive">
                                 <span>↑ 23% from last month</span>
                             </div>
@@ -86,7 +86,7 @@ function Dashboard() {
                                     <Users className="w-5 h-5 text-blue-600" />
                                 </div>
                             </div>
-                            <div className="analytics-card-value">342</div>
+                            <div className="analytics-card-value">12</div>
                             <div className="analytics-card-change positive">
                                 <span>↑ 18 new this month</span>
                             </div>
@@ -99,7 +99,7 @@ function Dashboard() {
                                     <BookMarked className="w-5 h-5 text-orange-600" />
                                 </div>
                             </div>
-                            <div className="analytics-card-value">8</div>
+                            <div className="analytics-card-value">4</div>
                             <div className="analytics-card-change positive">
                                 <span>↑ 1 new this month</span>
                             </div>
@@ -125,7 +125,7 @@ function Dashboard() {
                                     <Clock className="w-5 h-5 text-purple-600" />
                                 </div>
                             </div>
-                            <div className="analytics-card-value">256</div>
+                            <div className="analytics-card-value">156</div>
                             <div className="analytics-card-change positive">
                                 <span>↑ 32 hours this month</span>
                             </div>
@@ -202,7 +202,7 @@ function Dashboard() {
                 {roles.includes("Admin") && <Link to="/course-list"><div className="card h3"><List />Course List</div></Link>}
                 {roles.includes("Admin") && <div className="card h3"><Replace />Reassign Course</div>}
                 {roles.includes("Instructor") && <Link to="/add-course"><div className="card h3"><FilePlus2 />Add Course</div></Link>}
-                {roles.includes("Instructor") && <Link to="/course-list"><div className="card h3"><SquarePen />Manage Course</div></Link>}
+                {roles.includes("Instructor") && <Link to="/manage-courses"><div className="card h3"><SquarePen />Manage Course</div></Link>}
                 {roles.includes("Instructor") && <Link to="/course-list"><div className="card h3"><List />Course List</div></Link>}
             </div>
         </div>

@@ -261,16 +261,44 @@ th {
   }
 
   .login-form {
-    @apply text-gray-300 sm:text-gray-500 text-xs p-10 rounded-2xl w-full max-w-sm bg-[#092038] sm:bg-white sm:rounded-3xl sm:shadow-2xl;
-    background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
-    border: 1px solid rgba(20, 147, 254, 0.1);
+    @apply text-gray-300 sm:text-gray-500 text-xs p-8 rounded-2xl w-full max-w-sm bg-[#0f2438] sm:bg-white sm:rounded-3xl sm:shadow-2xl;
+    background-color: #0f2438;
+    border: none;
   }
 
   @media (max-width: 640px) {
     .login-form {
-      background-color: #092038;
+      background-color: #0f2438;
       background-image: none;
       border: none;
+    }
+
+    .login-form .text-input.modern {
+      background-color: #1a3a52;
+      border-color: #264056;
+      color: #e7e7e7;
+    }
+
+    .login-form .text-input.modern:focus {
+      background-color: #1f4064;
+      border-color: #ff9800;
+      color: #e7e7e7;
+    }
+
+    .login-form .btn-primary.modern {
+      background: linear-gradient(90deg, #1f3349 0%, #355475 100%);
+    }
+
+    .login-form .btn-guest {
+      background-color: #1a3a52;
+      border-color: #264056;
+      color: #e7e7e7;
+    }
+
+    .login-form .btn-guest:hover {
+      background-color: #1f4064;
+      border-color: #ff9800;
+      color: #ff9800;
     }
   }
 
@@ -290,7 +318,7 @@ th {
   }
 
   .login-subtitle {
-    @apply text-gray-500 text-sm font-medium;
+    @apply text-gray-500 text-xs font-semibold;
   }
 
   .error-banner {
@@ -347,7 +375,7 @@ th {
   }
 
   .text-input.modern {
-    @apply w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-800 placeholder-gray-400 transition-all duration-200;
+    @apply w-full px-5 py-2 border border-gray-200 rounded-xl text-gray-800 placeholder-gray-400 transition-all duration-200;
     background-color: #fafbfc;
     font-size: 16px;
     padding-right: 2.75rem;
@@ -367,14 +395,18 @@ th {
   }
 
   .forgot-password-link {
-    @apply text-orange-400 text-xs font-semibold hover:text-orange-500 cursor-pointer transition-colors;
+    @apply text-orange-400 text-xs font-normal hover:text-orange-500 cursor-pointer transition-colors text-right block -mt-2 mb-2;
   }
 
   .btn-primary.modern {
-    @apply bg-gradient-to-r from-[#1f3349] to-[#355475] w-full text-white px-4 py-3 rounded-xl font-semibold transition-all duration-200 hover:shadow-lg hover:from-[#264056] hover:to-[#3d5f7f];
+    @apply bg-gradient-to-r from-[#1f3349] to-[#355475] w-full text-white px-5 py-3 rounded-xl font-semibold transition-all duration-200 hover:shadow-lg hover:from-[#264056] hover:to-[#3d5f7f];
     cursor: pointer;
     border: none;
     box-shadow: 0 2px 8px rgba(31, 51, 73, 0.2);
+  }
+
+  .btn-primary.modern:disabled {
+    @apply opacity-75 cursor-not-allowed;
   }
 
   .btn-primary.modern:active {
@@ -398,8 +430,12 @@ th {
   }
 
   .btn-guest {
-    @apply w-full bg-white text-gray-700 px-4 py-3 rounded-xl font-semibold border-2 border-gray-200 transition-all duration-200 hover:border-orange-400 hover:text-orange-400 hover:shadow-md;
+    @apply w-full bg-white text-gray-700 px-5 py-3 rounded-xl font-semibold border-2 border-gray-200 transition-all duration-200 hover:border-orange-400 hover:text-orange-400 hover:shadow-md;
     cursor: pointer;
+  }
+
+  .btn-guest:disabled {
+    @apply opacity-75 cursor-not-allowed;
   }
 
   .btn-guest:active {
@@ -407,11 +443,11 @@ th {
   }
 
   .login-footer {
-    @apply text-center pt-3;
+    @apply text-center pt-5;
   }
 
   .login-footer p {
-    @apply text-gray-600 text-sm m-0;
+    @apply text-gray-600 text-xs font-semibold m-0;
   }
 
   .link-primary {

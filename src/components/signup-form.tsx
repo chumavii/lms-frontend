@@ -73,19 +73,19 @@ function SignUpForm() {
               value={fullName}
               onChange={e => setName(e.target.value)}
               required
-              placeholder="John Doe"
+              placeholder=""
               className="text-input modern"
             />
           </div>
 
           <div className="form-group">
-            <label className="input-title">Email Address</label>
+            <label className="input-title">Email</label>
             <input
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              placeholder="you@example.com"
+              placeholder=""
               className="text-input modern"
             />
           </div>
@@ -118,7 +118,7 @@ function SignUpForm() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
-                placeholder="••••••••"
+                placeholder=""
                 className="text-input modern"
               />
               <button
@@ -149,7 +149,7 @@ function SignUpForm() {
                 value={passwordTwo}
                 onChange={e => setPasswordTwo(e.target.value)}
                 required
-                placeholder="••••••••"
+                placeholder=""
                 className="text-input modern"
               />
               <button

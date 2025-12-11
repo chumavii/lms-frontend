@@ -14,10 +14,12 @@ function LoginForm({ onLoginSuccess }: LoginFormProps) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   async function loginUser(email: string, password: string) {
     setError('');
+    setLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/auth/login`, {
         method: 'POST',
@@ -33,6 +35,7 @@ function LoginForm({ onLoginSuccess }: LoginFormProps) {
       navigate('/');
     } catch (err: any) {
       setError(err.message);
+      setLoading(false);
     }
   }
 
@@ -51,7 +54,7 @@ function LoginForm({ onLoginSuccess }: LoginFormProps) {
       <div className="login-container">
         <form onSubmit={handleSubmit} className='login-form'>
           <div className="login-header">
-            <h2 className="h2">Welcome Back</h2>
+            <h2 className="h2">Login</h2>
             <p className="login-subtitle">Sign in to your account</p>
           </div>
           
@@ -62,14 +65,14 @@ function LoginForm({ onLoginSuccess }: LoginFormProps) {
           )}
           
           <div className="form-group">
-            <label className="input-title">Email Address</label>
+            <label className="input-title">Email</label>
             <input
               type="email"
               aria-label='email'
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              placeholder="you@example.com"
+              placeholder=""
               className="text-input modern"
             />
           </div>
@@ -77,12 +80,7 @@ function LoginForm({ onLoginSuccess }: LoginFormProps) {
           <div className="form-group">
             <div className="password-header">
               <label className="input-title">Password</label>
-              <p
-                onClick={() => navigate('/forgot-password')}
-                className="forgot-password-link"
-              >
-                Forgot?
-              </p>
+
             </div>
             <div className="password-input-wrapper">
               <input
@@ -91,7 +89,7 @@ function LoginForm({ onLoginSuccess }: LoginFormProps) {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
-                placeholder="••••••••"
+                placeholder=""
                 className="text-input modern"
               />
               <button
@@ -112,10 +110,16 @@ function LoginForm({ onLoginSuccess }: LoginFormProps) {
                 )}
               </button>
             </div>
+            <p
+                onClick={() => navigate('/forgot-password')}
+                className="forgot-password-link"
+              >
+                Forgot password?
+              </p>
           </div>
 
-          <button type="submit" className="btn-primary modern">
-            Sign In
+          <button type="submit" className="btn-primary modern" disabled={loading}>
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
 
           <div className="login-divider">
@@ -126,8 +130,9 @@ function LoginForm({ onLoginSuccess }: LoginFormProps) {
             type="button"
             onClick={loginAsGuest}
             className="btn-guest"
+            disabled={loading}
           >
-            Continue as Guest
+            {loading ? 'Signing in...' : 'Continue as Guest'}
           </button>
 
           <div className='login-footer'>
