@@ -125,20 +125,21 @@ function InstructorRequests() {
 
     return (
         <div className="page-div">
-            {/* Header + Search + Filter */}
+            <div className="page-header">
+                <h2>Instructor Requests</h2>
+                <p>Review and manage instructor role requests</p>
+            </div>
+
+            {/* Search + Filter */}
             <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-3">
-                <h2 className="text-2xl font-bold text-[#4e8ccf]">Instructor Requests</h2>
-                <div className="flex items-center gap-3 relative" ref={filterRef}>
-                    <div className="relative">
-                        <Search className="absolute left-2 top-2.5 text-gray-400 w-4 h-4" />
-                        <input
-                            type="text"
-                            placeholder="Search by name or email..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="pl-8 pr-3 py-2 border rounded-md text-sm w-64 focus:ring-2 focus:ring-[#4e8ccf] focus:outline-none"
-                        />
-                    </div>
+                <div className="flex items-center gap-3 relative flex-1 sm:flex-none" ref={filterRef}>
+                    <input
+                        type="text"
+                        placeholder="Search by name or email..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="flex-1 max-w-sm px-4 py-2.5 border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 transition-all duration-200 hover:border-orange-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none"
+                    />
 
                     <button
                         className="p-2 rounded hover:bg-gray-200"

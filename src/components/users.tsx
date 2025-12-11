@@ -6,12 +6,15 @@ function Users() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>();
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
   const [showActions, setShowActions] = useState(false);
   const filterRef = useRef<HTMLDivElement>(null);
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     getUsers()
@@ -48,10 +51,41 @@ function Users() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleAction = (action: string) => {
-    console.log("Action:", action, "on", selectedUsers);
-    setShowActions(false);
-    setSelectedUsers([]);
+  const handleAction = async (action: string) => {
+    if (selectedUsers.length === 0) return;
+
+    setActionLoading(action);
+    setError(undefined);
+
+    try {
+      for (const userEmail of selectedUsers) {
+        const actionLower = action.toLowerCase();
+        const res = await fetch(`${BASE_URL}/auth/users/${actionLower}`, {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: userEmail }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data?.message || `Failed to ${action} user`);
+        }
+      }
+
+      // Refresh users list after successful action
+      const updatedUsers = await getUsers();
+      setUsers(updatedUsers);
+      setShowActions(false);
+      setSelectedUsers([]);
+    } catch (err: any) {
+      setError(err.message || `Failed to perform ${action}`);
+      console.error("Action error:", err);
+    } finally {
+      setActionLoading(null);
+    }
   };
 
   const renderStatus = (isApproved: boolean) => {
@@ -59,30 +93,45 @@ function Users() {
   };
 
   return (
-    <div className="page-div sm:p-6">
-      <h2 className="text-2xl font-bold mb-4 text-[#4e8ccf]">Users</h2>
+    <div className="page-div">
+      <div className="page-header">
+        <h2>Users</h2>
+        <p>Manage platform users and their access</p>
+      </div>
 
       {/* Top Actions */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 w-full">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 w-full bg-white p-4 rounded-xl shadow-sm border border-gray-100">
         <div className="relative w-full sm:w-auto">
           <button
-            disabled={selectedUsers.length === 0}
+            disabled={selectedUsers.length === 0 || actionLoading !== null}
             onClick={() => setShowActions((prev) => !prev)}
-            className={`btn-primary flex items-center gap-2 px-4 py-2 w-full sm:w-auto justify-between ${
-              selectedUsers.length === 0 ? "opacity-50 cursor-not-allowed" : ""
+            className={`flex items-center gap-2 px-4 py-2.5 w-full sm:w-auto justify-between rounded-lg font-medium transition-all ${
+              selectedUsers.length === 0 || actionLoading !== null
+                ? "bg-gray-100 text-gray-400 cursor-not-allowed" 
+                : "bg-gradient-to-r from-[#1f3349] to-[#355475] text-white hover:shadow-lg"
             }`}
           >
             Actions <ChevronDown className="w-4 h-4" />
           </button>
 
           {showActions && selectedUsers.length > 0 && (
-            <div className="absolute mt-2 w-full sm:w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10 p-2 flex flex-col gap-1">
-              {["Activate", "Deactivate", "Change role", "Delete"].map((a) => (
+            <div className="absolute mt-2 w-full sm:w-48 bg-white border border-gray-200 rounded-lg shadow-2xl z-10 p-2 flex flex-col gap-1">
+              {["Activate", "Deactivate", "Delete"].map((a, idx) => (
                 <button
                   key={a}
                   onClick={() => handleAction(a)}
-                  className="text-left w-full px-2 py-1 hover:bg-gray-100 rounded text-sm"
+                  disabled={actionLoading !== null}
+                  className={`flex items-center gap-2 text-left w-full px-3 py-2 rounded text-sm font-medium transition-colors disabled:opacity-60 ${
+                    idx === 2 
+                      ? "bg-red-50 text-red-600 hover:bg-red-100" 
+                      : "text-gray-700 hover:bg-blue-50"
+                  }`}
                 >
+                  {actionLoading === a ? (
+                    <Loader2 className="animate-spin w-4 h-4" />
+                  ) : (
+                    <span className="w-4 h-4" />
+                  )}
                   {a}
                 </button>
               ))}
@@ -96,22 +145,22 @@ function Users() {
             placeholder="Search by name or email"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="text-input flex-1 max-w-sm"
+            className="flex-1 max-w-sm px-4 py-2.5 border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 transition-all duration-200 hover:border-orange-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none"
           />
           <button
-            className="p-2 rounded hover:bg-gray-200"
+            className="p-2.5 rounded-lg hover:bg-gray-100 transition-colors"
             onClick={() => setShowFilters((prev) => !prev)}
           >
-            <Filter className="w-5 h-5" />
+            <Filter className="w-5 h-5 text-gray-600" />
           </button>
 
           {showFilters && (
-            <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-10">
-              <label className="block mb-2 text-sm font-medium">Role</label>
+            <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-xl p-4 z-10">
+              <label className="block mb-3 text-sm font-semibold text-gray-700">Role</label>
               <select
                 value={roleFilter}
                 onChange={(e) => setRoleFilter(e.target.value)}
-                className="text-input w-full"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-gray-800 text-sm focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none"
               >
                 <option value="">All Roles</option>
                 <option value="Student">Student</option>
@@ -120,9 +169,9 @@ function Users() {
               </select>
               <button
                 onClick={() => setRoleFilter("")}
-                className="mt-2 text-sm underline text-blue-500"
+                className="mt-3 text-sm font-medium text-orange-500 hover:text-orange-600 transition-colors"
               >
-                Reset
+                Reset Filters
               </button>
             </div>
           )}
@@ -147,13 +196,14 @@ function Users() {
 
       {/* Desktop Table */}
       {!loading && !error && (
-        <div className="overflow-x-auto rounded-lg border border-gray-200 hidden sm:block">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-100 text-gray-600 text-sm uppercase">
+        <div className="table-container hidden sm:block">
+          <table>
+            <thead>
               <tr>
-                <th className="px-4 py-3">
+                <th className="w-12">
                   <input
                     type="checkbox"
+                    className="w-4 h-4 cursor-pointer"
                     onChange={(e) =>
                       setSelectedUsers(
                         e.target.checked
@@ -167,28 +217,39 @@ function Users() {
                     }
                   />
                 </th>
-                <th className="px-4 py-3 text-left">Name</th>
-                <th className="px-4 py-3 text-left">Email</th>
-                <th className="px-4 py-3 text-left">Roles</th>
-                <th className="px-4 py-3 text-left">Status</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 text-sm">
+            <tbody>
               {filteredUsers.map((user) => (
-                <tr key={user.email} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-center">
+                <tr key={user.email}>
+                  <td className="text-center">
                     <input
                       type="checkbox"
+                      className="w-4 h-4 cursor-pointer"
                       checked={selectedUsers.includes(user.email)}
                       onChange={() => toggleSelect(user.email)}
                     />
                   </td>
-                  <td className="px-4 py-3 font-medium">{user.fullName}</td>
-                  <td className="px-4 py-3">{user.email}</td>
-                  <td className="px-4 py-3">
-                    {Array.isArray(user.roles) ? user.roles.join(", ") : user.roles}
+                  <td className="font-semibold text-gray-900">{user.fullName}</td>
+                  <td className="text-gray-600">{user.email}</td>
+                  <td>
+                    <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
+                      {Array.isArray(user.roles) ? user.roles.join(", ") : user.roles}
+                    </span>
                   </td>
-                  <td className="px-4 py-3">{renderStatus(user.isApproved)}</td>
+                  <td>
+                    <span className={`inline-block px-3 py-1 text-xs font-medium rounded-full ${
+                      user.isApproved 
+                        ? "bg-green-50 text-green-700" 
+                        : "bg-yellow-50 text-yellow-700"
+                    }`}>
+                      {renderStatus(user.isApproved)}
+                    </span>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -198,22 +259,33 @@ function Users() {
 
       {/* Mobile Cards */}
       {!loading && !error && (
-        <div className="sm:hidden flex flex-col gap-2">
+        <div className="sm:hidden flex flex-col gap-3">
           {filteredUsers.map((user) => (
-            <div key={user.email} className="bg-white p-4 rounded-lg shadow flex flex-col gap-2">
-              <div className="flex justify-between items-center">
-                <span className="font-medium">{user.fullName}</span>
+            <div key={user.email} className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex-1">
+                  <p className="font-semibold text-gray-900">{user.fullName}</p>
+                  <p className="text-xs text-gray-500 mt-1">{user.email}</p>
+                </div>
                 <input
                   type="checkbox"
+                  className="w-4 h-4 cursor-pointer"
                   checked={selectedUsers.includes(user.email)}
                   onChange={() => toggleSelect(user.email)}
                 />
               </div>
-              <p className="text-sm text-gray-500">{user.email}</p>
-              <p className="text-sm text-gray-500">
-                {Array.isArray(user.roles) ? user.roles.join(", ") : user.roles}
-              </p>
-              <p className="text-sm text-gray-500">Status: {renderStatus(user.isApproved)}</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="inline-block px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
+                  {Array.isArray(user.roles) ? user.roles.join(", ") : user.roles}
+                </span>
+                <span className={`inline-block px-2.5 py-1 text-xs font-medium rounded-full ${
+                  user.isApproved 
+                    ? "bg-green-50 text-green-700" 
+                    : "bg-yellow-50 text-yellow-700"
+                }`}>
+                  {renderStatus(user.isApproved)}
+                </span>
+              </div>
             </div>
           ))}
         </div>

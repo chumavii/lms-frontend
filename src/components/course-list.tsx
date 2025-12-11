@@ -67,14 +67,19 @@ function CourseList() {
 
   return (
     <div className="page-div">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-[#4e8ccf]">Courses</h2>
+      <div className="page-header">
+        <h2>Courses</h2>
+        <p>Browse and manage available courses</p>
+      </div>
+
+      {/* Search Bar */}
+      <div className="mb-6 flex w-full max-w-sm">
         <input
           type="text"
-          placeholder="Search courses..."
+          placeholder="Search by course name or instructor"
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
-          className="text-input w-64"
+          className="flex-1 max-w-sm px-4 py-2.5 border border-gray-200 rounded-lg text-gray-800 placeholder-gray-400 transition-all duration-200 hover:border-orange-300 focus:border-orange-400 focus:ring-2 focus:ring-orange-200 focus:outline-none"
         />
       </div>
 

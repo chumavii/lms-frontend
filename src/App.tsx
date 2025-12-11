@@ -11,7 +11,10 @@ import SignupForm from "./components/signup-form.tsx";
 import Unauthorized from "./components/unauthorized.tsx";
 import Settings from "./components/settings.tsx";
 import MyCourses from "./components/my-courses.tsx";
+import ManageCourses from "./components/manage-courses.tsx";
+import MyDrafts from "./components/my-drafts.tsx";
 import AddCourse from "./components/add-course.tsx";
+import DraftCourses from "./components/draft-courses.tsx";
 import ForgotPasswordForm from "./components/forgot-password.tsx";
 import ResetPasswordForm from "./components/reset-password.tsx";
 import InstructorRequests from "./components/instructor-requests.tsx";
@@ -39,8 +42,11 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/course-list" element={<CourseList />} />
             <Route path="/add-course" element={<PrivateRoute allowedRoles={instructorRole}><AddCourse /></PrivateRoute>} />
+            <Route path="/manage-courses" element={<PrivateRoute allowedRoles={instructorRole}><ManageCourses /></PrivateRoute>} />
+            <Route path="/my-drafts" element={<PrivateRoute allowedRoles={instructorRole}><MyDrafts /></PrivateRoute>} />
             <Route path="/my-courses" element={<PrivateRoute allowedRoles={studentRole}><MyCourses /></PrivateRoute>} />
             <Route path="/users" element={<PrivateRoute allowedRoles={adminRole}><Users /></PrivateRoute>} />
+            <Route path="/draft-courses" element={<PrivateRoute allowedRoles={adminRole}><DraftCourses /></PrivateRoute>} />
             <Route path="/instructor-requests" element={<PrivateRoute allowedRoles={adminRole}><InstructorRequests /></PrivateRoute>} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/unauthorized" element={<Unauthorized />} />

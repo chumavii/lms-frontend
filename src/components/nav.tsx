@@ -46,18 +46,19 @@ function Nav({ onMenuClick }: NavProps) {
             </button>
 
             {menuOpen && (
-              <div className="logout-button flex flex-col">
+              <div className="logout-button flex flex-col overflow-hidden">
                 <Link
                   to="/settings"
                   className="btn-secondary text-left w-full"
-                  onClick={() => setMenuOpen(false)} // <-- closes menu
+                  onClick={() => setMenuOpen(false)}
                 >
                   Edit Profile
                 </Link>
+                <div className="border-t border-gray-100"></div>
                 <button
                   onClick={() => {
                     logout();
-                    setMenuOpen(false); // optional: close menu after logout too
+                    setMenuOpen(false);
                   }}
                   className="btn-secondary text-left w-full"
                 >
