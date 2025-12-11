@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Loader2, AlertCircle, CheckCircle, Info } from 'lucide-react';
 import { createCourse } from '../services/api';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
 function AddCourse() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({

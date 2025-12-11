@@ -13,7 +13,7 @@ interface InstructorCourse {
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function ManageCourses() {
-    const { fullName } = useAuth();
+    const { } = useAuth();
     const [courses, setCourses] = useState<InstructorCourse[]>([]);
     const [filteredCourses, setFilteredCourses] = useState<InstructorCourse[]>([]);
     const [loading, setLoading] = useState(true);
