@@ -13,6 +13,7 @@ function SignUpForm() {
   const [success, setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordTwo, setShowPasswordTwo] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent) {
@@ -25,6 +26,7 @@ function SignUpForm() {
       return;
     }
 
+    setLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/auth/register`, {
         method: 'POST',
@@ -42,6 +44,7 @@ function SignUpForm() {
       setTimeout(() => navigate('/login'), 2000); // optional auto-redirect
     } catch (err: any) {
       setError(err.message);
+      setLoading(false);
     }
   }
 
@@ -172,7 +175,9 @@ function SignUpForm() {
             </div>
           </div>
 
-          <button type="submit" className="btn-primary modern">Create Account</button>
+          <button type="submit" className="btn-primary modern" disabled={loading}>
+            {loading ? 'Creating Account...' : 'Create Account'}
+          </button>
 
           <div className="login-footer">
             <p>Already have an account? <Link to="/login" className="link-primary">Sign In</Link></p>
