@@ -244,7 +244,9 @@ th {
   }
 
   .form-div {
-    @apply flex flex-col items-center justify-center min-h-screen bg-[#092038] sm:bg-gradient-to-b sm:from-[#092038] sm:to-[#0f2f47] px-4 py-8;
+    @apply flex flex-col items-center justify-center min-h-screen px-4 py-8;
+        @apply flex flex-col items-center justify-center min-h-screen bg-[#092038] sm:bg-gradient-to-b sm:from-[#092038] sm:to-[#0f2f47] px-4 py-8;
+    background-attachment: fixed;
   }
 
   .form {
@@ -268,8 +270,7 @@ th {
 
   @media (max-width: 640px) {
     .login-form {
-      background-color: #0f2438;
-      background-image: none;
+      background: transparent;
       border: none;
     }
 
@@ -318,7 +319,7 @@ th {
   }
 
   .login-subtitle {
-    @apply text-gray-500 text-xs font-semibold;
+    @apply text-gray-400 text-xs font-semibold;
   }
 
   .error-banner {
@@ -447,7 +448,7 @@ th {
   }
 
   .login-footer p {
-    @apply text-gray-600 text-xs font-semibold m-0;
+    @apply text-gray-400 text-xs font-semibold m-0;
   }
 
   .link-primary {

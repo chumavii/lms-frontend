@@ -83,50 +83,86 @@ function AdminManageCourses() {
                     <p className="text-gray-600">No courses found</p>
                 </div>
             ) : (
-                <div className="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Instructor</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredCourses.map(course => (
-                                <tr key={course.id}>
-                                    <td className="font-semibold">{course.title}</td>
-                                    <td className="text-sm text-gray-600">{course.description.substring(0, 50)}...</td>
-                                    <td>{course.instructorName}</td>
-                                    <td>
-                                        <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                <>
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Instructor</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredCourses.map(course => (
+                                    <tr key={course.id}>
+                                        <td className="font-semibold">{course.title}</td>
+                                        <td className="text-sm text-gray-600">{course.description.substring(0, 50)}...</td>
+                                        <td>{course.instructorName}</td>
+                                        <td>
+                                            <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                                                Published
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    className="p-2 text-gray-600 hover:text-blue-600 transition"
+                                                    title="Edit course"
+                                                >
+                                                    <Edit2 className="w-4 h-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => setDeleteConfirm(course.id)}
+                                                    className="p-2 text-gray-600 hover:text-red-600 transition"
+                                                    title="Delete course"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden space-y-4">
+                        {filteredCourses.map(course => (
+                            <div key={course.id} className="bg-white border border-gray-200 rounded-lg p-4">
+                                <div className="mb-3">
+                                    <h3 className="font-semibold text-gray-900 mb-1">{course.title}</h3>
+                                    <p className="text-sm text-gray-600 mb-2">{course.description.substring(0, 80)}...</p>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm text-gray-700">{course.instructorName}</span>
+                                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
                                             Published
                                         </span>
-                                    </td>
-                                    <td>
-                                        <div className="flex gap-2">
-                                            <button
-                                                className="p-2 text-gray-600 hover:text-blue-600 transition"
-                                                title="Edit course"
-                                            >
-                                                <Edit2 className="w-4 h-4" />
-                                            </button>
-                                            <button
-                                                onClick={() => setDeleteConfirm(course.id)}
-                                                className="p-2 text-gray-600 hover:text-red-600 transition"
-                                                title="Delete course"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                                    </div>
+                                </div>
+                                <div className="flex gap-2">
+                                    <button
+                                        className="flex-1 px-3 py-2 bg-blue-50 text-blue-600 text-sm font-semibold rounded-lg hover:bg-blue-100 transition flex items-center justify-center gap-1"
+                                    >
+                                        <Edit2 className="w-4 h-4" />
+                                        Edit
+                                    </button>
+                                    <button
+                                        onClick={() => setDeleteConfirm(course.id)}
+                                        className="flex-1 px-3 py-2 bg-red-50 text-red-600 text-sm font-semibold rounded-lg hover:bg-red-100 transition flex items-center justify-center gap-1"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </>
             )}
 
             {deleteConfirm !== null && (

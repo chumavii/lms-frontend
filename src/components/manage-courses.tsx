@@ -118,7 +118,7 @@ function ManageCourses() {
             )}
 
             {/* Search Bar */}
-            <div className="mb-6 flex w-full max-w-sm gap-3">
+            <div className="mb-6 flex flex-col sm:flex-row w-full gap-3">
                 <input
                     type="text"
                     placeholder="Search your courses"
@@ -128,7 +128,7 @@ function ManageCourses() {
                 />
                 <Link
                     to="/add-course"
-                    className="px-4 py-3 bg-gradient-to-r from-[#1f3349] to-[#355475] text-white font-semibold rounded-xl hover:shadow-lg transition-all whitespace-nowrap"
+                    className="px-4 py-3 bg-gradient-to-r from-[#1f3349] to-[#355475] text-white font-semibold rounded-xl hover:shadow-lg transition-all whitespace-nowrap text-center"
                 >
                     + Add Course
                 </Link>
