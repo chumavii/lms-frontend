@@ -18,7 +18,7 @@ function EnrollButton({ courseId, onSuccess }: EnrollButtonProps) {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch(`${BASE_URL}/enrollment/enroll/${courseId}`, {
+      const res = await fetch(`${BASE_URL}/enrollments/enroll/${courseId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
